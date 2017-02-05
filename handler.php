@@ -16,15 +16,10 @@ class Handler {
   public static function handleSearch($itemId) {
     $app = SearchItem::withItemId($itemId);
     $item = $app->getItem();
-    $images = $item->PictureURL;
-
-    echo "<h1>Product info</h1>";
-    echo "<h4>{$item->Title}</h4>";
-    echo "Price: {$item->ConvertedCurrentPrice} <br/>";
-    foreach ($images as $image) {
-      echo "<img src={$image} width=150 height=180>";
-    }
+    FormatHTML::formatSearchResult($item);
   }
+
+
 
   public static function handleDb($action) {
     $searchDb = new EbaySearchLog();
@@ -37,8 +32,31 @@ class Handler {
         break;
       case $ACTION->LIST:
         $list = $searchDb->list();
-        print_r($list);
+        FormatHTML::formatListResult($list);
         break;
+    }
+  }
+}
+
+class FormatHTML {
+   public static function formatSearchResult($item) {
+    $images = $item->PictureURL;
+    echo "
+      <div id='item-container'>
+        <h1>Item Info</h1>
+        <h4>{$item->title}</h4>
+        <h5>Price: {$item->ConvertedCurrentPrice}</h5>
+        <div id='images-container'>";
+    foreach ($images as $image) {
+      echo "<img src={$image} width=150 height=180>";
+    }
+    echo "</div>
+      </div>";
+  }
+
+  public static function formatListResult($list) {
+    foreach ($list as $item) {
+      print_r($item);
     }
   }
 }

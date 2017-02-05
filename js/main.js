@@ -6,5 +6,14 @@ function init() {
 
 function handleSubmit(e) {
   e.preventDefault();
-  console.log(e);
+  var formData = $(this).serialize();
+  var itemContainer = $('#item-wrapper');
+  itemContainer.html(showLoader());
+  $.post('handler.php?action=search', formData, function(data) {
+    previousSearches.html(data);
+  });
+}
+
+function showLoader() {
+  return "<img src='./img/gears.svg' />";
 }
