@@ -40,13 +40,13 @@ class EbaySearchLog extends Database {
     $this->execute_query(...$params);
   }
 
-  public function deleteRow($id) {
+  public function deleteRow(int $id) {
     $this->query = 'delete from search_log where id = ?';
     $this->execute_query($id);
   }
 
   public function list() {
-    $this->query = 'select id, title, seller, price, images from search_log';
+    $this->query = 'select id, title, seller, price, images from search_log order by id desc';
     return $this->fetch_data();
   }
 
