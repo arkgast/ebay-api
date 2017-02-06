@@ -30,7 +30,7 @@ function loadPreviousSearches() {
 
 function deleteItem() {
   var encId = this.dataset.id;
-  $.post('handler.php?action=delete', {'item-id': encId}, function(data) {
+  $.post('handler.php?action=delete', {'item-id': encId}, function() {
     loadPreviousSearches();
   });
 }

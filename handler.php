@@ -30,7 +30,7 @@ class Handler {
     $searchDb = new EbaySearchLog();
     switch ($action) {
       case $ACTION->ADD:
-        $searchDb->insertRow($item->Title, $item->Seller, $item->ConvertedCurrentPrice, (array)$item->PictureURL);
+        $searchDb->insertRow($item['title'], $item['seller'], $item['price'], $item['images'], $item['itemId']);
         break;
       case $ACTION->DELETE:
         $decId = Helpers::decrypt($itemId);
@@ -52,12 +52,12 @@ class Helpers {
   private static $ENCRYPT_KEY = "key";
 
   public static function formatSearchResult($item) {
-    $images = $item->PictureURL;
+    $images = $item['images'];
     echo "
       <div id='item-container'>
         <h1>Item Info</h1>
-        <h4>{$item->Title}</h4>
-        <h5>Price: {$item->ConvertedCurrentPrice}</h5>
+        <h4>{$item['title']}</h4>
+        <h5>Price: {$item['price']}</h5>
         <div id='images-container'>";
     foreach ($images as $image) {
       echo "<img src={$image} width=150 height=180>";
@@ -72,7 +72,8 @@ class Helpers {
         <div>
           <h5>{$item['title']}</h5>
           <p>{$item['seller']}</p>
-          <p>{$item['price']}</p>";
+          <p>Number of times you have look for this item: {$item['repeat_search']}</p>
+          <p>Price: {$item['price']}</p>";
       $images = unserialize($item['images']);
       foreach ($images as $img) {
         echo "<img src={$img} with=120 height=150 />";

@@ -46,7 +46,14 @@ class SearchItem {
     $xmlData = $this->doRequest();
     if ($xmlData) {
       $xml = simplexml_load_string($xmlData);
-      return $xml->Item;
+      $item = array(
+        'itemId' => (int)$xml->Item->ItemID,
+        'title' => (string)$xml->Item->Title,
+        'price' => (float)$xml->Item->ConvertedCurrentPrice,
+        'images' => (array)$xml->Item->PictureURL,
+        'seller' => (string)$xml->Item->Seller
+      );
+      return $item;
     } else
       return false;
   }

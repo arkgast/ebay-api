@@ -36,17 +36,17 @@ class EbaySearchLog extends Database {
 
   public function insertRow(...$params) {
     $this->serializeField(...$params);
-    $this->query = 'insert into search_log(title, seller, price, images) values(?, ?, ?, ?)';
+    $this->query = 'insert into search_log(title, seller, price, images, item_id) values(?, ?, ?, ?, ?)';
     $this->execute_query(...$params);
   }
 
   public function deleteRow(int $id) {
-    $this->query = 'delete from search_log where id = ?';
+    $this->query = 'delete from search_log where item_id in (select item_id from (select * from search_log where id = ?) as a)';
     $this->execute_query($id);
   }
 
   public function list() {
-    $this->query = 'select id, title, seller, price, images from search_log order by id desc';
+    $this->query = 'select id, title, seller, price, images, count(item_id) as repeat_search from search_log group by item_id order by id desc';
     return $this->fetch_data();
   }
 
