@@ -69,18 +69,23 @@ class Helpers {
   public static function formatListResult($list) {
     foreach ($list as $item) {
       echo "
-        <div>
+        <div class='col-xs-12 col-sm-6'>
           <h5>{$item['title']}</h5>
           <p>{$item['seller']}</p>
           <p>Number of times you have look for this item: {$item['repeat_search']}</p>
-          <p>Price: {$item['price']}</p>";
+          <p>Price: {$item['price']}</p>
+          <div class='img-wrapper'>";
       $images = unserialize($item['images']);
       foreach ($images as $img) {
-        echo "<img src={$img} with=120 height=150 />";
+        echo "<div class='img-container'> <img src={$img} /> </div>";
       }
       $encId = self::encrypt($item['id']);
-      echo "
-        <button class='delete-item' data-id='{$encId}'>Delete</button>
+      echo "</div>
+          <div class='text-center'>
+            <button class='delete-item btn btn-danger' data-id='{$encId}'>
+              <span class='glyphicon glyphicon-remove' aria-hidden='true'></span>
+            </button>
+          </div>
         </div>";
     }
   }
@@ -109,7 +114,6 @@ class Helpers {
 }
 
 switch ($action) {
-  case $ACTION->ADD:
   case $ACTION->DELETE:
   case $ACTION->LIST:
     Handler::handleDb($action, null, $itemId);

@@ -14,6 +14,13 @@ abstract class Database {
       echo "Can't connect";
   }
 
+  abstract protected function insertRow();
+
+  abstract protected function deleteRow(int $id);
+
+  abstract protected function list();
+
+
   public function fetch_data() {
     $result = $this->conn->query($this->query);
     $rows = $result->fetch_all(MYSQLI_ASSOC);
@@ -27,6 +34,10 @@ abstract class Database {
     $stmt->bind_param($sLen, ...$params);
     $stmt->execute();
     $stmt->close();
+  }
+
+  public function __desctruct() {
+    mysqli_close($this->conn);
   }
   
 }

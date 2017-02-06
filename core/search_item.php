@@ -46,6 +46,8 @@ class SearchItem {
     $xmlData = $this->doRequest();
     if ($xmlData) {
       $xml = simplexml_load_string($xmlData);
+      if (!$xml->Item)
+        return null;
       $item = array(
         'itemId' => (int)$xml->Item->ItemID,
         'title' => (string)$xml->Item->Title,
@@ -55,7 +57,7 @@ class SearchItem {
       );
       return $item;
     } else
-      return false;
+      return null;
   }
 }
 

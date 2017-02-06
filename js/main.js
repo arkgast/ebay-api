@@ -15,6 +15,7 @@ function handleSubmit(e) {
     itemContainer.html(data);
     loadPreviousSearches();
   });
+  $(this).find('input').val('');
 }
 
 function showLoader() {
